@@ -1,6 +1,14 @@
+def _is_number():
+    try:
+        x = int(letter)
+    except:
+        return False
+    else:
+        return True
 class Game:
+    global letter
     def __init__(self):
-        self.__dictionary = ["the","of","and","a","to","in","is","you","that","it","he","was","for","on","are","as","with","his","they","I","at","be","this","have","from","or","one","had","by","word","but","not","what","all","were","we","when","your","can","said","there","use","an","each","which","she","do","how","their","if","will","up","other","about","out","many","then","them","these","so","some","her","would","make","like","him","into","time","has","look","two","more","write","go","see","number","no","way","could","people","my","than","first","water","been","call","who","oil","its","now","find","long","down","day","did","get","come","made","may","part"]
+        self.__all_words = ["the","of","and","a","to","in","is","you","that","it","he","was","for","on","are","as","with","his","they","I","at","be","this","have","from","or","one","had","by","word","but","not","what","all","were","we","when","your","can","said","there","use","an","each","which","she","do","how","their","if","will","up","other","about","out","many","then","them","these","so","some","her","would","make","like","him","into","time","has","look","two","more","write","go","see","number","no","way","could","people","my","than","first","water","been","call","who","oil","its","now","find","long","down","day","did","get","come","made","may","part"]
         self.__chosen_word = None
         self.__tries = 10
         self.__has_ended = False
@@ -13,8 +21,8 @@ class Game:
     
     def __get_word(self):
         from random import randint as rn
-        x = len(self.__dictionary) - 1
-        self.__chosen_word = self.__dictionary[rn(0,x)]
+        x = len(self.__all_words) - 1
+        self.__chosen_word = self.__all_words[rn(0,x)]
         print("Picked a word")
         del rn
     
@@ -33,9 +41,10 @@ class Game:
                 print(i,end="")
         print("\n")
     def __ask(self):
+        global letter
         while True:
-            letter = input("give a letter\n")
-            if len(letter) > 1 or letter == " ":
+            letter = input("Give a letter\n")
+            if len(letter) > 1 or letter in [""," "] or _is_number():
                 print("Invalid Option")
             elif letter in self.__guessed_letters:
                 print("You have already picked this letter")
@@ -43,7 +52,8 @@ class Game:
                 break
         return letter
     
-    def __check(self,letter):
+    def __check(self):
+        
         self.__guessed_letters.append(letter)
         if letter in self.__chosen_word:
             self.__found_letters.append(letter)
@@ -67,7 +77,7 @@ class Game:
         while not self.__has_ended:
             self.__print_found_letters()
             letter = self.__ask()
-            self.__check(letter)
+            self.__check()
             self.__check_if_ended()
         if len(self.__found_letters) != len(self.__word_letters):
             print("You lost")
